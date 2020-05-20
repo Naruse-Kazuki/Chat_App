@@ -81,15 +81,17 @@ class _LoginPageState extends State<LoginPage> {
                     try {
                       // メール/パスワードでユーザー登録
                       final FirebaseAuth auth = FirebaseAuth.instance;
-                      await auth.createUserWithEmailAndPassword(
+                      final AuthResult result =
+                          await auth.createUserWithEmailAndPassword(
                         email: email,
                         password: password,
                       );
+                      final FirebaseUser user = result.user;
                       // ユーザー登録に成功した場合
                       // チャット画面に遷移＋ログイン画面を破棄
                       await Navigator.of(context).pushReplacement(
                         MaterialPageRoute(builder: (context) {
-                          return ChatPage();
+                          return ChatPage(user);
                         }),
                       );
                     } catch (e) {
@@ -111,15 +113,17 @@ class _LoginPageState extends State<LoginPage> {
                     try {
                       // メール/パスワードでログイン
                       final FirebaseAuth auth = FirebaseAuth.instance;
-                      await auth.signInWithEmailAndPassword(
+                      final AuthResult result =
+                          await auth.signInWithEmailAndPassword(
                         email: email,
                         password: password,
                       );
+                      final FirebaseUser user = result.user;
                       // ログインに成功した場合
                       // チャット画面に遷移＋ログイン画面を破棄
                       await Navigator.of(context).pushReplacement(
                         MaterialPageRoute(builder: (context) {
-                          return ChatPage();
+                          return ChatPage(user);
                         }),
                       );
                     } catch (e) {
@@ -141,6 +145,11 @@ class _LoginPageState extends State<LoginPage> {
 
 // チャット画面用Widget
 class ChatPage extends StatelessWidget {
+  // 引数からユーザー情報を受け取れるようにする
+  ChatPage(this.user);
+  // ユーザー情報
+  final FirebaseUser user;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -159,6 +168,10 @@ class ChatPage extends StatelessWidget {
             },
           ),
         ],
+      ),
+      body: Center(
+        // ユーザー情報を表示
+        child: Text('ログイン情報：${user.email}'),
       ),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
