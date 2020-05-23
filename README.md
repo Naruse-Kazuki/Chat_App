@@ -1,8 +1,8 @@
-# chatapp
+# Chat_App
 
 FlutterとFirebaseで作成したチャットアプリです。
 
-[使用技術]
+# Technology selection
 
 言語: Dart
 
@@ -12,7 +12,7 @@ SDK: Flutter(Flutter for web)
 
 データベース: Firebase(Database)
 
-デプロイ: Firebase[Hosting]
+デプロイ: Firebase(Hosting)
 
 ---
 
